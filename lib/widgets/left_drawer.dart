@@ -53,19 +53,6 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Home'),
-            // Navigasi ke halaman utama portofolio
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyHomePage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.add_circle_outline),
             title: const Text('Add Project'),
             // Navigasi ke halaman tambah proyek
