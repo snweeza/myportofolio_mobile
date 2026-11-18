@@ -157,6 +157,8 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                 ),
               ),
 
+              
+
             // === Tombol Simpan ===
             Align(
               alignment: Alignment.bottomCenter,
@@ -174,6 +176,18 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                         builder: (context) {
                           return AlertDialog(
                             title: const Text('Proyek berhasil ditambahkan!'),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Nama Proyek: $_projectName'),
+                                  Text('Deskripsi: $_description'),
+                                  Text('Kategori: $_category'),
+                                  Text('Teknologi: $_technologies'),
+                                  Text('Tautan: $_projectLink'),
+                                ],
+                              ),
+                            ),
                             actions: [
                               TextButton(
                                 child: const Text('OK'),
