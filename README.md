@@ -1,10 +1,19 @@
 # myportofolio_mobile
+Aplikasi portofolio pribadi berbasis mobile yang dikembangkan menggunakan Flutter dan Dart. Aplikasi ini merupakan versi mobile dari portofolio pribadi yang memungkinkan pengguna melihat informasi profil, pengalaman, serta proyek yang dimiliki.
 
-A new Flutter project.
+Proyek ini dikembangkan sebagai bagian dari pembelajaran Pengembangan Perangkat Lunak dan Platform Berbasis Web (PBP) ^_^
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
+### Prerequisites
+Pastikan Flutter SDK dan Dart SDK sudah terpasang di perangkat.
+### Set Up
+1. git clone https://github.com/USERNAME/REPOSITORY.git
+2. cd myportofolio_mobile
+3. Update dependency Flutter 
+-> flutter pub get
+4. Periksa konfigurasi Flutter 
+-> flutter doctor
+5. Jalankan aplikasi
+-> flutter run
 
 ### Tugas 7
 1. Jelaskan apa yang dimaksud dengan widget tree pada Flutter dan bagaimana hubungan induk-anak (parent-child) bekerja antar-widget!
