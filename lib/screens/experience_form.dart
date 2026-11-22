@@ -141,8 +141,8 @@ void dispose() {
                     final hasil = await showDatePicker(
                       context: context,
                       initialDate: _startAt ?? DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
                     );
 
                     if (hasil!=null) {
