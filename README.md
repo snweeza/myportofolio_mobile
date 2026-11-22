@@ -50,5 +50,40 @@ StatefulWidget: punya State yang bisa berubah via setState(), bisa rebuild sendi
 Hot restart: restart app, state reset ke awal. Digunakan untuk mengubah initState, main(), nilai default variabel, global/static. Seperti reboot HP.
 Hot reload tidak bisa diandalkan ketika perubahan menyentuh hal-hal yang hanya dieksekusi sekali saat inisialisasi, yaitu mengubah isi initState(), mengubah nilai default field/global/static, mengubah main(), mengubah struktur widget (misalnya StatelessWidget menjadi StatefulWidget), mengubah enum/const/typedef, serta mengubah native code (Android/iOS).
 
-Deklarasi AI:
+### Tugas 8
+1. Jelaskan perbedaan antara Navigator.push(), Navigator.pushReplacement(), dan Navigator.pop(). Metode apa yang digunakan untuk membuka formulir dari kartu aksi? Jelaskan juga bagaimana opsi Home di drawer membawa pengguna kembali ke halaman utama.
+- Method push() merupakan method yang digunakan untuk menambahkan suatu route ke dalam stack route yang dikelola oleh Navigator. Method ini menyebabkan route yang ditambahkan berada pada paling atas stack, sehingga route yang baru saja ditambahkan tersebut akan muncul dan ditampilkan kepada pengguna.
+- Method pop() merupakan method yang digunakan untuk menghapus route yang sedang ditampilkan kepada pengguna (atau dalam kata lain, route yang berada pada paling atas stack) dari stack route yang dikelola oleh Navigator. Method ini menyebabkan aplikasi untuk berpindah dari route yang sedang ditampilkan kepada pengguna ke route yang berada di bawahnya pada stack yang dikelola Navigator.
+- Method pushReplacement() menggantikan route yang sedang ditampilkan kepada pengguna dengan suatu route. Method ini menyebabkan aplikasi untuk berpindah dari route yang sedang ditampilkan kepada pengguna ke suatu route yang diberikan. 
+
+Method yang digunakan untuk membuka formulir dari kartu aksi adalah method push, lalu opsi Home di drawer dapat membawa pengguna kembali ke halaman utama dengan menggunakan method pushReplacement() agar kembali tanpa menumpuk halaman baru di atas stack, hal ini mencegah user menekan back berkali-kali hanya untuk menutup halaman yang sama.
+
+2. Bagaimana susunan Scaffold, AppBar, dan Drawer membantu menjaga struktur halaman tetap konsisten? Berikan satu contoh penggunaan warna tema portofolio di lebih dari satu halaman.
+Scaffold menyediakan struktur dasar halaman seperti Appbar, drawer, dan area konten. Dengan menempatkan AppBar dan Drawer pada bagian yang sama di setiap halaman, navigasi dan tampilan halaman menjadi konsisten. Contohnya, warna biru Color(0xFF248ECC) digunakan pada AppBar di halaman utama maupun halaman formulir pengalaman dan proyek.
+
+3. Mengapa tata letak tersebut dipilih untuk formulir? Jelaskan peran widget pengatur jarak dan widget penggulir ketika ruang layar terbatas.
+Tata letak yang digunakan untuk formulir adalah Column. Column digunakan agar kolom input dan tombol simpan tersusun dari atas ke bawah. Padding memberikan jarak di sekitar kolom sehingga tampilannya tidak terlalu rapat. Lalu widget singleChildScrollView memungkinkan pengguna untuk menggulir formulir jika isinya lebih panjang daripada ruang layar.
+
+4. Apa peran GlobalKey<FormState>, validator, dan validate() saat tombol Simpan ditekan? Berikan satu contoh nilai yang ditolak oleh validasi dan jelaskan mengapa memilih jenis input atau papan ketik saja belum cukup.
+GlobalKey<FormState> memberi akses ke status formulir, termasuk untuk menjalankan validasi. Setiap validator memeriksa nilai kolom dan mengembalikan pesan kesalahan jika nilainya tidak valid. Saat tombol Simpan ditekan, .validate() menjalankan semua validator dan data hanya diproses jika semuanya lolos.
+
+Contohnya, kolom nama proyek menolak nilai kosong karena wajib diisi. Memilih jenis input yang sesuai hanya membantu pengguna untuk memasukkan data, hal itu tidak menjamin data benar atau kengkap. Oleh karena itu, input masih perlu diperiksa dengan validator.
+
+### Deklarasi AI:
+# Tugas 7 
 Tidak ada penggunaan AI dalam mengerjakan tugas 7 karena perubahan yang dilakukan hanya perubahan pada warna.
+
+# Tugas 8
+Saya menggunakan DeepSeek dalam membangun isi kolom terutama pada bagian tanggal mulai di experience_form, validasinya, lalu penentuan icon untuk add experience. Dengan menganalisis output dari AI, itu memudahkan saya untuk memahami pengimplementasian kode yang belum pernah diaplikasikan sebelumnya.
+
+# AI Usage Log
+| No | Topik / Kebutuhan | Prompt (Ringkas) | Output AI yang Digunakan | Penyesuaian yang Dilakukan |
+| ---------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| 1 | Menambahkan input tanggal pada form | "Buat datetime" / "Kalo user yg bisa milih pake datepicker gt" | Kode `showDatePicker`, `DateTime?`, `TextEditingController`, validasi tanggal | Diadaptasi ke form pengalaman; dipilih Opsi A (controller) |
+| 2 | Validasi tanggal mulai | "Tanggal mulai mending dibikin validasi gaboleh lebih dr datetime now ga" | Rekomendasi `lastDate: DateTime.now()` + cek `isAfter` di validator | Menerapkan hanya `DateTime.now()` untuk sekarang |
+| 3 | Review kode form pengalaman | (melampirkan file kode) | Identifikasi bug reset `_experienceName`/`_description`, saran perbaikan `onPressed` tombol OK | Diperbaiki dan diuji ulang |
+| 4 | Menentukan ikon tombol tambah | "Kalo add form iconsnya apa aja" | Rekomendasi `Icons.add`, contoh `ElevatedButton.icon` | Diterapkan pada tombol, diubah memakai `Icons.add` |
+
+
+
+
