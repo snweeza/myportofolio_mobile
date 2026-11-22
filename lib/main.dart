@@ -29,7 +29,10 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF069181)).copyWith(primary: const Color(0xFF248ECC), secondary: const Color(0xFF3AAD87)),
+        scaffoldBackgroundColor: const Color(0xFFF6FCFD),
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF248ECC), foregroundColor: Color(0xFFFFE4C2)),
+        elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF3AAD87), foregroundColor: const Color.fromARGB(255, 255, 239, 220))),
       ),
       home: MyHomePage(),
     );

@@ -15,7 +15,7 @@ class LeftDrawer extends StatelessWidget {
           // Drawer Header
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.indigo,
+              color: Color(0xFF248ECC),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +25,7 @@ class LeftDrawer extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Color(0xFFFFE4C2),
                   ),
                 ),
                 SizedBox(height: 10),
@@ -33,7 +33,7 @@ class LeftDrawer extends StatelessWidget {
                   'Explore personal projects and experiences!',
                   style: TextStyle(
                     fontSize: 15,
-                    color: Colors.white,
+                    color: Color(0xFFFFE4C2),
                   ),
                 ),
               ],

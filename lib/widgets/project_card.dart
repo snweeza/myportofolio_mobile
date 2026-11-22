@@ -51,7 +51,7 @@ class ItemCard extends StatelessWidget {
               children: [
                 Icon(
                   item.icon,
-                  color: Colors.white,
+                  color: const Color(0xFFFFE4C2),
                   size: 30.0,
                 ),
                 const Padding(
@@ -60,7 +60,7 @@ class ItemCard extends StatelessWidget {
                 Text(
                   item.name,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: const Color(0xFFFFE4C2)),
                 ),
               ],
             ),

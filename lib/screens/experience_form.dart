@@ -39,8 +39,8 @@ void dispose() {
             'Add Experience Form',
           ),
         ),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF248ECC),
+        foregroundColor: const Color(0xFFFFE4C2),
       ),
       drawer: const LeftDrawer(),
       body: Form(
@@ -170,7 +170,7 @@ void dispose() {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          WidgetStateProperty.all(Colors.indigo),
+                          WidgetStateProperty.all(const Color.fromARGB(255, 79, 141, 206)),
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -214,7 +214,7 @@ void dispose() {
                     },
                     child: const Text(
                       "Save",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Color.fromARGB(255, 254, 232, 206)),
                     ),
                   ),
                 ),

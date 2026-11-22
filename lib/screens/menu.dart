@@ -11,9 +11,9 @@ class MyHomePage extends StatelessWidget {
   final String kelas = "PBP A";
 
   final List<ItemHomepage> items = [
-    ItemHomepage("Tambah Pengalaman", Icons.person_add, Colors.blue),
-    ItemHomepage("Tambah Proyek", Icons.add_circle, Colors.green),
-    ItemHomepage("Logout", Icons.logout, Colors.red),
+    ItemHomepage("Tambah Pengalaman", Icons.person_add, const Color(0xFF3AAD87)),
+    ItemHomepage("Tambah Proyek", Icons.add_circle, const Color(0xFF069181)),
+    ItemHomepage("Logout", Icons.logout, const Color(0xFF607A97)),
   ];
 
   @override
@@ -23,12 +23,12 @@ class MyHomePage extends StatelessWidget {
         title: const Text(
           'MyPortfolio',
           style: TextStyle(
-            color: Colors.white,
+            color: const Color(0xFFFFE4C2),
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: const Color(0xFFFFE4C2)),
       ),
 
       // Drawer di sebelah kiri

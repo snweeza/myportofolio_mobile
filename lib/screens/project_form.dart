@@ -33,8 +33,8 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
             'Add Project Form',
           ),
         ),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
+        backgroundColor: const Color(0xFF248ECC),
+        foregroundColor: const Color(0xFFFFE4C2),
       ),
       drawer: const LeftDrawer(),
       body: Form(
@@ -167,7 +167,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        WidgetStateProperty.all(Colors.indigo),
+                        WidgetStateProperty.all(const Color.fromARGB(255, 79, 141, 206)),
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -204,7 +204,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                   },
                   child: const Text(
                     "Save",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Color.fromARGB(255, 254, 232, 206)),
                   ),
                 ),
               ),
