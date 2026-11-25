@@ -31,7 +31,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        iconTheme: const IconThemeData(color:Color(0xFFFFE4C2)),
+        iconTheme: const IconThemeData(color: Color(0xFFFFE4C2)),
       ),
 
       // Drawer di sebelah kiri

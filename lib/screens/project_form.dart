@@ -30,7 +30,6 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
     'Other',
   ];
 
-  
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -53,10 +52,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
     );
 
     try {
-      final created = await apiClient.createProject(
-        newProject,
-        token: token,
-      );
+      final created = await apiClient.createProject(newProject, token: token);
 
       if (!mounted) return;
 
@@ -87,7 +83,6 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
 
       if (!mounted) return;
       Navigator.pop(context, true);
-
     } on ApiException catch (e) {
       if (!mounted) return;
 
@@ -97,17 +92,13 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Sesi berakhir. Silakan login ulang.'),
-          ),
+          const SnackBar(content: Text('Sesi berakhir. Silakan login ulang.')),
         );
 
         await ensureLoggedIn(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Gagal (${e.statusCode}): ${e.message}'),
-          ),
+          SnackBar(content: Text('Gagal (${e.statusCode}): ${e.message}')),
         );
       }
     } finally {
@@ -116,7 +107,6 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
