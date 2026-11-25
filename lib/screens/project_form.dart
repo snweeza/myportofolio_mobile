@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 import 'package:myportofolio_mobile/models/project.dart'; // BARU
 import 'package:myportofolio_mobile/services/api_client.dart'; // BARU
@@ -30,15 +30,18 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
     'Other',
   ];
 
-  //logika submit
+  
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
     final ok = await ensureLoggedIn(context);
-    if (!context.mounted) return;
-    if (!ok) return;
+    if (!mounted || !ok) return;
 
-    final token = context.read<AuthState>().token;
+    // Simpan referensi sebelum proses async berikutnya.
+    final authState = context.read<AuthState>();
+    final apiClient = context.read<ApiClient>();
+
+    final token = authState.token;
     if (token == null) return;
 
     setState(() => _isSubmitting = true);
@@ -50,12 +53,13 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
     );
 
     try {
-      final created = await context.read<ApiClient>().createProject(
+      final created = await apiClient.createProject(
         newProject,
         token: token,
       );
 
-      if (!context.mounted) return;
+      if (!mounted) return;
+
       await showDialog<void>(
         context: context,
         builder: (dialogContext) => AlertDialog(
@@ -80,26 +84,39 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
           ],
         ),
       );
-      if (!context.mounted) return;
+
+      if (!mounted) return;
       Navigator.pop(context, true);
+
     } on ApiException catch (e) {
-      if (!context.mounted) return;
+      if (!mounted) return;
+
       if (e.statusCode == 401) {
-        await context.read<AuthState>().logout();
-        if (!context.mounted) return;
+        await authState.logout();
+
+        if (!mounted) return;
+
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sesi berakhir. Silakan login ulang.')),
+          const SnackBar(
+            content: Text('Sesi berakhir. Silakan login ulang.'),
+          ),
         );
+
         await ensureLoggedIn(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Gagal (${e.statusCode}): ${e.message}')),
+          SnackBar(
+            content: Text('Gagal (${e.statusCode}): ${e.message}'),
+          ),
         );
       }
     } finally {
-      if (mounted) setState(() => _isSubmitting = false);
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

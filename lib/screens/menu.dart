@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 import 'package:myportofolio_mobile/widgets/project_card.dart';
 
@@ -26,12 +26,12 @@ class MyHomePage extends StatelessWidget {
         title: const Text(
           'MyPortfolio',
           style: TextStyle(
-            color: const Color(0xFFFFE4C2),
+            color: Color(0xFFFFE4C2),
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        iconTheme: const IconThemeData(color: const Color(0xFFFFE4C2)),
+        iconTheme: const IconThemeData(color:Color(0xFFFFE4C2)),
       ),
 
       // Drawer di sebelah kiri
