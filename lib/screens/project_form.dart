@@ -1,5 +1,10 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
+import 'package:myportofolio_mobile/models/project.dart'; // BARU
+import 'package:myportofolio_mobile/services/api_client.dart'; // BARU
+import 'package:myportofolio_mobile/services/auth_state.dart'; // BARU
+import 'package:myportofolio_mobile/widgets/auth_guard.dart'; // BARU
+import 'package:provider/provider.dart'; // BARU
 
 class ProjectFormPage extends StatefulWidget {
   const ProjectFormPage({super.key});
@@ -12,10 +17,11 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _projectName = "";
   String _description = "";
-  String _category = "Web Development"; // default
-  String _technologies = "";
-  String _projectLink = "";
+  String _url = "";
+  bool _isSubmitting = false;
 
+  // Category tetap ada di UI, tapi tidak dikirim ke API (tidak ada di serializer)
+  String _category = "Web Development";
   final List<String> _categories = [
     'Web Development',
     'Mobile Development',
@@ -24,22 +30,89 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
     'Other',
   ];
 
+  //logika submit
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final ok = await ensureLoggedIn(context);
+    if (!context.mounted) return;
+    if (!ok) return;
+
+    final token = context.read<AuthState>().token;
+    if (token == null) return;
+
+    setState(() => _isSubmitting = true);
+
+    final newProject = Project(
+      title: _projectName.trim(),
+      description: _description.trim(),
+      url: _url.trim(),
+    );
+
+    try {
+      final created = await context.read<ApiClient>().createProject(
+        newProject,
+        token: token,
+      );
+
+      if (!context.mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: const Text('Proyek berhasil ditambahkan!'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Nama Proyek: ${created.title}'),
+                Text('Deskripsi: ${created.description}'),
+                Text('Tautan: ${created.url}'),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+            ),
+          ],
+        ),
+      );
+      if (!context.mounted) return;
+      Navigator.pop(context, true);
+    } on ApiException catch (e) {
+      if (!context.mounted) return;
+      if (e.statusCode == 401) {
+        await context.read<AuthState>().logout();
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Sesi berakhir. Silakan login ulang.')),
+        );
+        await ensureLoggedIn(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gagal (${e.statusCode}): ${e.message}')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Add Project Form',
-          ),
-        ),
+        title: const Center(child: Text('Add Project Form')),
         backgroundColor: const Color(0xFF248ECC),
         foregroundColor: const Color(0xFFFFE4C2),
       ),
       drawer: const LeftDrawer(),
       body: Form(
-      key: _formKey,
-      child: SingleChildScrollView(
+        key: _formKey,
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -94,7 +167,7 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                 ),
               ),
 
-              // === Category ===
+              // === Category (tetap tampil, tidak dikirim ke API) ===
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownButtonFormField<String>(
@@ -106,33 +179,16 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                   ),
                   initialValue: _category,
                   items: _categories
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
-                          ))
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category),
+                        ),
+                      )
                       .toList(),
                   onChanged: (String? newValue) {
                     setState(() {
                       _category = newValue!;
-                    });
-                  },
-                ),
-              ),
-
-              // === Technologies ===
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Contoh: Flutter, Django, Figma",
-                    labelText: "Teknologi yang Digunakan",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _technologies = value!;
                     });
                   },
                 ),
@@ -151,66 +207,54 @@ class _ProjectFormPageState extends State<ProjectFormPage> {
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _projectLink = value!;
+                      _url = value!;
                     });
                   },
-                ),
-              ),
-
-              
-
-            // === Tombol Simpan ===
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        WidgetStateProperty.all(const Color.fromARGB(255, 79, 141, 206)),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Proyek berhasil ditambahkan!'),
-                            content: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Nama Proyek: $_projectName'),
-                                  Text('Deskripsi: $_description'),
-                                  Text('Kategori: $_category'),
-                                  Text('Teknologi: $_technologies'),
-                                  Text('Tautan: $_projectLink'),
-                                ],
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  _formKey.currentState!.reset();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                  validator: (String? value) {
+                    // BARU: validasi format URL
+                    if (value == null || value.trim().isEmpty) {
+                      return "Tautan proyek tidak boleh kosong!";
                     }
+                    final uri = Uri.tryParse(value.trim());
+                    if (uri == null ||
+                        !uri.hasScheme ||
+                        (uri.scheme != 'http' && uri.scheme != 'https')) {
+                      return "URL tidak valid (mulai dengan http:// atau https://)";
+                    }
+                    return null;
                   },
-                  child: const Text(
-                    "Save",
-                    style: TextStyle(color: Color.fromARGB(255, 254, 232, 206)),
+                ),
+              ),
+
+              // === Tombol Simpan ===
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(
+                        const Color.fromARGB(255, 79, 141, 206),
+                      ),
+                    ),
+                    onPressed: _isSubmitting ? null : _submit, // BARU
+                    child: _isSubmitting
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text(
+                            "Save",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 254, 232, 206),
+                            ),
+                          ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );

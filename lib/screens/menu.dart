@@ -1,5 +1,4 @@
-
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 import 'package:myportofolio_mobile/widgets/project_card.dart';
 
@@ -11,7 +10,11 @@ class MyHomePage extends StatelessWidget {
   final String kelas = "PBP A";
 
   final List<ItemHomepage> items = [
-    ItemHomepage("Tambah Pengalaman", Icons.person_add, const Color(0xFF3AAD87)),
+    ItemHomepage(
+      "Tambah Pengalaman",
+      Icons.person_add,
+      const Color(0xFF3AAD87),
+    ),
     ItemHomepage("Tambah Proyek", Icons.add_circle, const Color(0xFF069181)),
     ItemHomepage("Logout", Icons.logout, const Color(0xFF607A97)),
   ];
@@ -92,11 +95,7 @@ class InfoCard extends StatelessWidget {
   final String title;
   final String content;
 
-  const InfoCard({
-    super.key,
-    required this.title,
-    required this.content,
-  });
+  const InfoCard({super.key, required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -107,10 +106,7 @@ class InfoCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8.0),
             Text(content),
           ],

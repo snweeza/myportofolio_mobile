@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
 
 class ExperienceFormPage extends StatefulWidget {
@@ -25,20 +25,16 @@ class _ExperienceFormPageState extends State<ExperienceFormPage> {
   ];
 
   @override
-void dispose() {
-  _experienceDateController.dispose();
-  super.dispose();
-}
+  void dispose() {
+    _experienceDateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Add Experience Form',
-          ),
-        ),
+        title: const Center(child: Text('Add Experience Form')),
         backgroundColor: const Color(0xFF248ECC),
         foregroundColor: const Color(0xFFFFE4C2),
       ),
@@ -55,7 +51,7 @@ void dispose() {
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: "Nama Pengalaman",
-                    labelText:"Nama Pengalaman",
+                    labelText: "Nama Pengalaman",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -63,10 +59,10 @@ void dispose() {
                   onChanged: (String? value) {
                     setState(() {
                       _experienceName = value!;
-                  });
+                    });
                   },
                   validator: (String? value) {
-                    if (value==null || value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return "Nama Pengalaman tidak boleh kosong!";
                     }
                     return null;
@@ -80,7 +76,7 @@ void dispose() {
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: "Deskripsi Pengalaman",
-                    labelText:"Deskripsi Pengalaman",
+                    labelText: "Deskripsi Pengalaman",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -88,10 +84,10 @@ void dispose() {
                   onChanged: (String? value) {
                     setState(() {
                       _description = value!;
-                  });
+                    });
                   },
                   validator: (String? value) {
-                    if (value==null || value.trim().isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return "Deskripsi pengalaman tidak boleh kosong!";
                     }
                     return null;
@@ -104,17 +100,20 @@ void dispose() {
                 padding: EdgeInsets.all(8.0),
                 child: DropdownButtonFormField<String>(
                   decoration: InputDecoration(
-                    labelText:"Kategori Pengalaman",
+                    labelText: "Kategori Pengalaman",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                   initialValue: _category,
                   items: _categories
-                        .map((category) => DropdownMenuItem(
+                      .map(
+                        (category) => DropdownMenuItem(
                           value: category,
                           child: Text(category),
-                        )).toList(),
+                        ),
+                      )
+                      .toList(),
                   onChanged: (String? value) {
                     setState(() {
                       _category = value!;
@@ -123,7 +122,7 @@ void dispose() {
                 ),
               ),
 
-            // Start At
+              // Start At
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -131,7 +130,7 @@ void dispose() {
                   readOnly: true,
                   decoration: InputDecoration(
                     hintText: "Tanggal Mulai",
-                    labelText:"Tanggal Mulai",
+                    labelText: "Tanggal Mulai",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -145,11 +144,11 @@ void dispose() {
                       lastDate: DateTime.now(),
                     );
 
-                    if (hasil!=null) {
+                    if (hasil != null) {
                       setState(() {
                         _startAt = hasil;
                         _experienceDateController.text =
-                        '${hasil.day}/${hasil.month}/${hasil.year}';
+                            '${hasil.day}/${hasil.month}/${hasil.year}';
                       });
                     }
                   },
@@ -169,8 +168,9 @@ void dispose() {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all(const Color.fromARGB(255, 79, 141, 206)),
+                      backgroundColor: WidgetStateProperty.all(
+                        const Color.fromARGB(255, 79, 141, 206),
+                      ),
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -178,7 +178,9 @@ void dispose() {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Pengalaman berhasil ditambahkan!'),
+                              title: const Text(
+                                'Pengalaman berhasil ditambahkan!',
+                              ),
                               content: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,8 +188,9 @@ void dispose() {
                                     Text('Nama Pengalaman: $_experienceName'),
                                     Text('Deskripsi: $_description'),
                                     Text('Kategori: $_category'),
-                                    Text('Tanggal: ${_startAt == null ? "-" : 
-                                    "${_startAt!.day}/${_startAt!.month}/${_startAt!.year}"}'),
+                                    Text(
+                                      'Tanggal: ${_startAt == null ? "-" : "${_startAt!.day}/${_startAt!.month}/${_startAt!.year}"}',
+                                    ),
                                   ],
                                 ),
                               ),
@@ -198,11 +201,11 @@ void dispose() {
                                     Navigator.pop(context);
                                     _formKey.currentState!.reset();
                                     setState(() {
-                                    _experienceName = "";
-                                    _description = "";
-                                    _category = "Volunteer";
-                                    _startAt = null;
-                                    _experienceDateController.clear();
+                                      _experienceName = "";
+                                      _description = "";
+                                      _category = "Volunteer";
+                                      _startAt = null;
+                                      _experienceDateController.clear();
                                     });
                                   },
                                 ),
@@ -214,7 +217,9 @@ void dispose() {
                     },
                     child: const Text(
                       "Save",
-                      style: TextStyle(color: Color.fromARGB(255, 254, 232, 206)),
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 254, 232, 206),
+                      ),
                     ),
                   ),
                 ),

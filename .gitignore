@@ -36,6 +36,9 @@ migrate_working_dir/
 # Symbolication related
 app.*.symbols
 
+# Generated json_serializable files
+*.g.dart
+
 # Obfuscation related
 app.*.map.json
 
